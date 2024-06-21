@@ -2,7 +2,7 @@
 # @Author: Jean Besnier
 # @Date:   2024-06-20 13:48:52
 # @Last Modified by:   Jean Besnier
-# @Last Modified time: 2024-06-21 20:45:06
+# @Last Modified time: 2024-06-21 20:53:38
 
 import pandas as pd
 import sys
@@ -61,7 +61,13 @@ def clean_csv_file():
                         status = 1
                     except FileExistsError:
                         print("This file already exists")
-                            
+								
+		# TODO: - proposer une suppression categorie par catégorie
+				#       - remplacer la suppression des valeurs manquantes par un remplissage (par la moyenne ou le voisin le plus proche)
+				#       - rajouter la suppression des doublons      
+				#       - vérifier les types de données, mettre en lumière les valeurs potentiellement problématiques
+				#       - identifier les outliers et proposer de les supprimer     
+				#       - Standardisation ?
     
 def main():
     clean_csv_file()
