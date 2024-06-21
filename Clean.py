@@ -44,12 +44,39 @@ def clean_csv_file():
         if res == "N" or res == '':
             exit(0)
         else:
-            data.dropna(axis = 'columns', inplace=True)
+            res = ' '
+            while (res != 'N' and res != '' and res != 'y'):
+                res = input("Do you want to remove all these rows? [y/N] : ")
+            if res == 'y':
+                data.dropna(axis = 'columns', inplace=True)
+            else:
+                status = 0
+                while status == 0:
+                    print("Choose a category to remove among :")
+                    for key, values in null_dict.items():
+                        if values != 0:
+                            print(f"{key}")
+                    res = input(">")
+                    if res in null_dict.keys() and null_dict[res] != 0:
+                        data.dropna(subset = [res], inplace= True)
+                        null_dict[res] = 0
+                    else:
+                        print("Wrong category name")
+                        continue
+                    if sum(null_dict.values()) == 0:
+                        status = 1
+                    choice = input("Do you want to continue? [Y/n] : ")
+                    if choice == 'n':
+                        status = 1
             res = ' '
             while (res != 'N' and res != '' and res != 'y'):
                 res = input("Do you want to replace the existing file? [y/N] : ")
             if (res == 'y'):
-                data.to_csv(args.file_path, sep=',' if (args.separator == None) else args.separator)
+                try:
+                    data.to_csv(args.file_path, sep=',' if (args.separator == None) else args.separator)
+                except Exception as e:
+                    print(e)
+                    exit(1)
             else:
                 status = 0
                 while (status == 0):
