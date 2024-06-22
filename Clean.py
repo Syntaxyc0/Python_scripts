@@ -2,7 +2,7 @@
 # @Author: Jean Besnier
 # @Date:   2024-06-20 13:48:52
 # @Last Modified by:   Jean Besnier
-# @Last Modified time: 2024-06-21 20:53:38
+# @Last Modified time: 2024-06-22 14:50:30
 
 import pandas as pd
 import sys
@@ -40,7 +40,7 @@ def clean_csv_file():
                 print(f"{key} : {values}")
         res = ' '
         while (res != 'N' and res != '' and res != 'y' ):
-          res = input("Do you want to remove the rows containing those missing values? [y/N] : ")
+          res = input("Do you want to remove rows containing those missing values? [y/N] : ")
         if res == "N" or res == '':
             exit(0)
         else:
@@ -52,11 +52,14 @@ def clean_csv_file():
             else:
                 status = 0
                 while status == 0:
-                    print("Choose a category to remove among :")
+                    print("Type skip or choose a category to remove among :")
                     for key, values in null_dict.items():
                         if values != 0:
                             print(f"{key}")
                     res = input(">")
+                    if res == "skip":
+                        status = 1
+                        break
                     if res in null_dict.keys() and null_dict[res] != 0:
                         data.dropna(subset = [res], inplace= True)
                         null_dict[res] = 0
@@ -65,6 +68,8 @@ def clean_csv_file():
                         continue
                     if sum(null_dict.values()) == 0:
                         status = 1
+                        print("There are no more missing values in the dataset")
+                        break
                     choice = input("Do you want to continue? [Y/n] : ")
                     if choice == 'n':
                         status = 1
@@ -89,7 +94,7 @@ def clean_csv_file():
                     except FileExistsError:
                         print("This file already exists")
 								
-		# TODO: - proposer une suppression categorie par catégorie
+		# TODO: - proposer une suppression categorie par catégorie ✓
 				#       - remplacer la suppression des valeurs manquantes par un remplissage (par la moyenne ou le voisin le plus proche)
 				#       - rajouter la suppression des doublons      
 				#       - vérifier les types de données, mettre en lumière les valeurs potentiellement problématiques
